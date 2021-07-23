@@ -275,4 +275,79 @@ function invoice_signatures($data)
 	ob_end_clean();
 	return $sign_result;
 	}
+
+		// // BRIGADE
+	// $data['main']['top']['project_number'] = 165163;
+	// $data['main']['top']['project_name'] = 'test';
+	// $data['main']['top']['project_name'] = 'test';
+	// $data['main']['top']['client_name'] = 'Контрагент';
+	// $data['main']['top']['client_branch_id'] = 'test321';
+	// $data['main']['top']['client_branch'] = 'test123';
+	// $data['main']['top']['client_machinary'] = 'test';
+	// $data['main']['top']['client_machinary_id'] = 'test';
+	// $data['main']['top']['contact_person'] = 'test';
+	// $data['main']['top']['date_deadline'] = 'test';
+	// $data['main']['top']['desc'] = 'test';
+	// $data['main']['top']['leading'] = 'test';
+	// $data['main']['top']['coordinator'] = 'test';
+	// $data['main']['top']['mounting_group'] = 'test';
+	// $data['main']['top']['estimated_cost'] = 'test';
+
+function brigade($data, $lang)
+	{
+	// SET SOME TEXT TO PRINT
+	// DELETE THE BUFFER
+	ob_clean();
+	// IF USE CUSTOM HEADERS NEEDS ob_start
+	ob_start(NULL, 0);
+	?>
+	<div><?php echo get_doc_title($data['doc_type']) ?></div>
+	<div>
+		<?php echo $lang[$data['doc_lang']]['project_id'] ?>  <b> <?php echo $data['main']['top']['project_number'] ?> </b><br>
+		<?php echo $lang[$data['doc_lang']]['project_name'] ?> <b> <?php echo $data['main']['top']['project_name'] ?> </b><br>
+		<?php echo $lang[$data['doc_lang']]['project_reason'] ?> <b> <?php echo $data['main']['top']['project_name'] ?> </b>
+	</div>
+	<div>
+		<?php echo $lang[$data['doc_lang']]['client_name'] ?> <b><?php echo $data['main']['top']['client_name'] ?></b> <br>
+		<table width="100%" border="0">
+			<tr>
+				<td width="30%" > <?php echo $lang[$data['doc_lang']]['client_branch_id'] ?> <b><?php echo $data['main']['top']['client_branch_id'] ?></b></td>
+				<td width="70%"><?php echo $lang[$data['doc_lang']]['client_branch_name'] ?> <b><?php echo $data['main']['top']['client_branch'] ?></b></td>
+			</tr>
+		</table>
+
+	<?php echo $lang[$data['doc_lang']]['client_machinary'] ?> <b><?php echo $data['main']['top']['client_machinary'] ?></b><br>
+	<?php echo $lang[$data['doc_lang']]['client_machinary_id'] ?> <b><?php echo $data['main']['top']['client_machinary_id'] ?></b><br>
+	<?php echo $lang[$data['doc_lang']]['contact_person'] ?><b><?php echo $data['main']['top']['contact_person'] ?></b>
+	</div>
+
+	<div>
+		<?php echo $lang[$data['doc_lang']]['date_deadline'] ?> <b><?php echo $data['main']['top']['date_deadline'] ?></b><br>
+		<?php echo $lang[$data['doc_lang']]['desc'] ?> <br>
+		<b><?php echo $data['main']['top']['desc'] ?></b><br>
+	</div>
+
+	<div>
+		<table width="100%" border="0">
+			<tr>
+				<td><?php echo $lang[$data['doc_lang']]['leading'] ?> <b><?php echo $data['main']['top']['leading'] ?></b></td>
+				<td><?php echo $lang[$data['doc_lang']]['coordinator'] ?> <b><?php echo $data['main']['top']['coordinator'] ?></b></td>
+			</tr>
+		</table>
+		<br>
+		<?php echo $lang[$data['doc_lang']]['mounting_group'] ?><br>
+		<b><?php echo $data['main']['top']['mounting_group'] ?></b><br>
+		<?php echo $lang[$data['doc_lang']]['estimated_cost'] ?> <b><?php echo $data['main']['top']['estimated_cost'] ?></b>
+	</div>
+
+	<?php
+	//Close and output PDF document
+	$brigade_result = ob_get_contents();
+	// d($brigade_result, 1);
+	ob_end_clean();
+	return $brigade_result;
+	}
+
+
+
 ?>
