@@ -102,11 +102,10 @@ function cpdf_create($data)
 		if ( $data['edit'] == 1 )
 			$data = edit_pdf($data, $lang);
 
-
 		$html .= invoice($data, $lang);
 		$html .= cpdf_table_creator($data['main']['table']);
 		$html .= invoice_signatures($data['main']['top']);
-
+		$html .= $data['note'];
 		}
 	// 5 ORDER
 	else if ( $data['doc_type'] == 5 )
@@ -281,7 +280,13 @@ function cpdf_table_creator($data)
 	if ( $data['settings']['calc_totals'] )
 		{
 		$vat_result = number_format((float)$total_no_vat * $vat, 2, '.','');
-		$total = number_format((float) $total_no_vat + $vat_result, 2, '.','');
+		$total_no_discount = number_format((float) $total_no_vat + $vat_result, 2, '.','');
+
+		// DISCOUNT
+		$total_discount = number_format((float) $total_no_discount - ($total_no_discount * ($data['discount'] / 100)), 2, '.','');
+
+		$total = ( $data['discount'] ) ? $total_discount : $total_no_discount;
+
 		$html .= '<div style="text-align:right">ДАНЪЧНА ОСНОВА: '. number_format((float)$total_no_vat, 2, '.','')  .' <br>
 		ДДС 20%: ' . $vat_result . '<br>
 		ОБЩА СТОЙНОСТ: '. $total .' <hr>
@@ -299,7 +304,7 @@ function cpdf_table_creator($data)
 // EDIT ALL INPUTS BEFORE CREATING PDF
 function edit_input_create($data_inputs)
 	{
-		global $invoice, $log;
+	global $invoice, $log;
 	$doc_lang = $data_inputs['doc_lang'];
 	$lang_data = $data_inputs['lang_data'];
 	$key = $data_inputs['key'];

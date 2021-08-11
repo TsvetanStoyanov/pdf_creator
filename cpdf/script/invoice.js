@@ -1,6 +1,10 @@
 var $counter = 0;
 var $total_row = 0;
 var $calc = {};
+
+
+
+
 function calc()
 	{
 	$calc = {};
@@ -16,15 +20,30 @@ function calc()
 
 		$('#product_price_' + $row_id).val( $total_row_no_vat.toFixed(2) );
 		});
+
 	// calc with/out vat
 	calc_totals();
 
+
 	// FILL TABLE AND INPUTS
 	$('#vat_amount_js').html( $calc.vat_amount.toFixed(2) );
-
 	$('#total_no_vat').val( $calc.total_no_vat.toFixed(2) );
 	$('.total_no_vat_html').html( $calc.total_no_vat.toFixed(2) );
 	$('#total_vat_js').html( $calc.total_with_vat.toFixed(2) );
+
+	// CONVERT NUMBER TO WORDS PRICE
+	$total_in_numbers = toSlovomLeva($calc.total_with_vat, 0);
+
+	$total_in_words = pstr_replace('currency', $('#currency option:selected').html(), $total_in_numbers)
+
+	if ( $('#currency option:selected').val() == 1 )
+		$total_in_words = pstr_replace('coins', 'стотинки', $total_in_words).toLowerCase();
+	else if ( $('#currency option:selected').val() == 2 )
+		$total_in_words = pstr_replace('coins', 'цента', $total_in_words).toLowerCase();
+	else if ( $('#currency option:selected').val() == 3 )
+		$total_in_words = pstr_replace('coins', 'евроцента', $total_in_words).toLowerCase();
+
+	$('#total_with_words').html( $total_in_words );
 	}
 
 function calc_totals()
@@ -40,6 +59,8 @@ function calc_totals()
 
 	$('input[name="vat_amount"]').val( $calc.vat_amount.toFixed(2) );
 	$('input[name="total_amount"]').val( $calc.total_with_vat.toFixed(2) );
+	$('input[name="total_after_discount"]').val( $calc.total_with_vat.toFixed(2) );
+
 	}
 
 function calc_discount($total_no_vat)
@@ -88,11 +109,13 @@ function project_add_row($data = 0)
 	$("#project_body").append($table_row);
 	bind_calc();
 	}
+
 function bind_calc()
 	{
 	$(document).delegate(".calc", "change keyup", function(event)
 		{
 		calc();
+		calc_totals();
 		});
 	}
 function project_add_row_click()
@@ -103,4 +126,5 @@ function project_add_row_click()
 function project_delete_row($id)
 	{
 	$('#product_row_' + $id).remove();
+	calc();
 	}

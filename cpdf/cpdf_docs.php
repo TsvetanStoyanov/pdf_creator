@@ -168,7 +168,7 @@ function invoice($data_full, $lang)
 	ob_clean();
 	// IF USE CUSTOM HEADERS NEEDS ob_start
 	ob_start(NULL, 0);
-
+// d($data, 1);
 	?>
 	<table style="border: 1px solid black;border-spacing: 5px;" >
 		<tbody>
@@ -209,6 +209,9 @@ function invoice($data_full, $lang)
 				<?php echo $lang[ $doc_lang ]['contractor_bic'] ?> <b><?php echo $data['contractor_bic'] ?></b> <br>
 				<?php echo $lang[ $doc_lang ]['contractor_bank_account'] ?> <b><?php echo $data['contractor_bank_account'] ?></b>
 				</td>
+			</tr>
+			<tr>
+				<td style="border: 1px solid black;border-spacing: 5px;" colspan="4">Забележка: <br> <?php echo $data['note'] ?></td>
 			</tr>
 		</tbody>
 	</table>
